@@ -1,0 +1,10 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "WORKFLOWS_SUBSCRIPTION_ID": "23dedca3-2d6f-4822-a69c-d354f6f9e298",
+    "WORKFLOWS_RESOURCE_GROUP_NAME": "NewResourceGroup",
+    "WORKFLOWS_LOCATION_NAME": "centralus"
+  }
+}
