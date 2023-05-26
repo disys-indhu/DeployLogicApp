@@ -9,6 +9,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    env:
+      SUBSCRIPTION_ID: 23dedca3-2d6f-4822-a69c-d354f6f9e298
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -19,9 +22,6 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           enable-AzPSSession: true
           allow-no-subscriptions: true
-
-      - name: Set Subscription ID
-        run: echo "SUBSCRIPTION_ID=${{ secrets.SUBSCRIPTION_ID }}" >> $GITHUB_ENV
 
       - name: Validate ARM Template
         run: |
