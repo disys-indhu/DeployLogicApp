@@ -13,19 +13,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install Azure CLI
+      - name: Set up Azure CLI
         run: |
           curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
-      - name: Azure Login
-        run: az login --service-principal -u ${{ secrets.2bd1d0a4-f88a-4baa-bf45-f6b4623c5859 }} -p ${{ secrets.ir28Q~vWRD30Cm_A.tH_yQ1yaI4EEmJOOFSYZc65 }} --tenant ${{ secrets.08fdfb44-3c18-4aa7-9519-72bddc98ad3a }}
+      - name: Create Repository
+        run: |
+          curl -u "your-github-username" -X POST -d '{"name":"setup-azure-cli", "auto_init": true}' https://api.github.com/user/repos
 
-      - name: Set Azure Subscription
-        run: az account set --subscription ${{ secrets.23dedca3-2d6f-4822-a69c-d354f6f9e298 }}
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Deploy Logic App ARM Template
         run: |
           az deployment group create \
-            --resource-group "NewResourceGroup" \
+            --resource-group NewResourceGroup \
             --template-file DeployLogicApp/LogicApp.json \
             --parameters @DeployLogicApp/LogicApp.parameters.json
