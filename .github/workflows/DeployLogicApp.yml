@@ -14,12 +14,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up Azure CLI
-        run: |
-          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-
-      - name: Create Repository
-        run: |
-          curl -u "your-github-username" -X POST -d '{"name":"setup-azure-cli", "auto_init": true}' https://api.github.com/user/repos
+        uses: azure/setup-azure-cli@v1
 
       - name: Azure Login
         uses: azure/login@v1
