@@ -18,6 +18,7 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           enable-AzPSSession: true
+          allow-no-subscriptions: true
 
       - name: Deploy Logic App ARM Template
         run: |
