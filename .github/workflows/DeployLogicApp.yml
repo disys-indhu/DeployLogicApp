@@ -13,16 +13,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Set up Azure CLI
+        uses: azure/setup-azure-cli@v1
+
       - name: Azure Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Deploy Logic App ARM Template
-        uses: azure/CLI@v1
-        with:
-          inlineScript: |
-            az deployment group create \
-              --resource-group NewResourceGroup \
-              --template-file DeployLogicApp/LogicApp.json \
-              --parameters @DeployLogicApp/LogicApp.parameters.json
+        run: |
+          az deployment group create \
+            --resource-group NewResourceGroup \
+            --template-file DeployLogicApp/LogicApp.json \
+            --parameters @DeployLogicApp/LogicApp.parameters.json
