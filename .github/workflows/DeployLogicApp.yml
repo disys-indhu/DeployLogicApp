@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      SUBSCRIPTION_ID: 23dedca3-2d6f-4822-a69c-d354f6f9e298
+      SUBSCRIPTION_ID: "23dedca3-2d6f-4822-a69c-d354f6f9e298"
 
     steps:
       - name: Checkout code
