@@ -23,7 +23,7 @@ jobs:
       - name: Validate ARM Template
         run: |
           az deployment group validate \
-            --subscription "${{ secrets.SUBSCRIPTION_ID }}" \
+            --subscription "23dedca3-2d6f-4822-a69c-d354f6f9e298" \
             --resource-group NewResourceGroup \
             --template-file DeployLogicApp/LogicApp.json \
             --parameters @DeployLogicApp/LogicApp.parameters.json
