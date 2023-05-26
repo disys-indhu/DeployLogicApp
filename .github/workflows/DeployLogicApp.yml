@@ -14,7 +14,8 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up Azure CLI
-        uses: disys-indhu/azure-setup-azure-cli@v2
+        uses: azure/setup-azure-cli@v3
+
 
       - name: Azure Login
         uses: azure/login@v1
