@@ -21,9 +21,9 @@ jobs:
           allow-no-subscriptions: true
 
       - name: Deploy Logic App ARM Template
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
-          resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
-          template: ./ARMTemplates/LA_Standard_Basic.json
-          parameters: ./ARMTemplates/LA_Standard_Basic_Param.json
+        run: |
+          az deployment group create \
+            --subscriptionId ${{ secrets.SUBSCRIPTION_ID }} \
+            --resourceGroupName ${{ secrets.RESOURCE_GROUP_NAME }} \
+            --template-file DeployLogicApp/LogicApp.json \
+            --parameters @DeployLogicApp/LogicApp.parameters.json
