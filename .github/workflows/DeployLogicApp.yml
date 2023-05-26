@@ -1,4 +1,4 @@
-name: CI
+name: Create a Logic App
 
 on:
   push:
@@ -8,23 +8,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build-and-deploy:
+    runs-on: windows-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Azure CLI
-        run: |
-          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v2
 
       - name: Azure Login
         uses: azure/login@v1
@@ -32,8 +20,9 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Deploy Logic App ARM Template
-        run: |
-          az deployment group create \
-            --resource-group NewResourceGroup \
-            --template-file DeployLogicApp/LogicApp.json \
-            --parameters @DeployLogicApp/LogicApp.parameters.json
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{github.event.inputs.subscriptionId}}
+          resourceGroupName: ${{github.event.inputs.resourceGroupName}}
+          template: DeployLogicApp/LogicApp.json
+          parameters: DeployLogicApp/LogicApp.parameters.json
