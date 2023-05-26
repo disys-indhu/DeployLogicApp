@@ -20,10 +20,13 @@ jobs:
           enable-AzPSSession: true
           allow-no-subscriptions: true
 
+      - name: Set Subscription ID
+        run: echo "SUBSCRIPTION_ID=${{ secrets.SUBSCRIPTION_ID }}" >> $GITHUB_ENV
+
       - name: Validate ARM Template
         run: |
           az deployment group validate \
-          --subscription ${{ secrets.SUBSCRIPTION_ID }} \
+          --subscription $SUBSCRIPTION_ID \
           --resource-group NewResourceGroup \
           --template-file DeployLogicApp/LogicApp.json \
           --parameters @DeployLogicApp/LogicApp.parameters.json
@@ -31,7 +34,7 @@ jobs:
       - name: Deploy Logic App ARM Template
         run: |
           az deployment group create \
-            --subscription ${{ secrets.SUBSCRIPTION_ID }} \
+            --subscription $SUBSCRIPTION_ID \
             --resource-group NewResourceGroup \
             --template-file DeployLogicApp/LogicApp.json \
             --parameters @DeployLogicApp/LogicApp.parameters.json
