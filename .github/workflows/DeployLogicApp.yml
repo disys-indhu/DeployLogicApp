@@ -1,5 +1,3 @@
-name: Deploy Logic App ARM Template
-
 on:
   push:
     branches:
@@ -23,7 +21,7 @@ jobs:
       - name: Validate ARM Template
         run: |
           az deployment group validate \
-          --subscription: ${{ secrets.SUBSCRIPTION_ID }} \
+          --subscription ${{ secrets.SUBSCRIPTION_ID }} \
           --resource-group NewResourceGroup \
           --template-file DeployLogicApp/LogicApp.json \
           --parameters @DeployLogicApp/LogicApp.parameters.json
@@ -31,7 +29,7 @@ jobs:
       - name: Deploy Logic App ARM Template
         run: |
           az deployment group create \
-             --subscription: ${{ secrets.SUBSCRIPTION_ID }} \
+            --subscription ${{ secrets.SUBSCRIPTION_ID }} \
             --resource-group NewResourceGroup \
             --template-file DeployLogicApp/LogicApp.json \
             --parameters @DeployLogicApp/LogicApp.parameters.json
