@@ -2,12 +2,14 @@ on:
   push:
     branches:
       - master
-env:
-  SUBSCRIPTION: 23dedca3-2d6f-4822-a69c-d354f6f9e298
+
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+     ENV_RESOURCEGROUP: az-logicapp-githubactions-demo-rg
+     ENV_RESOURCEGROUPLOCATION: australiaeast
     
     steps:
       - name: Checkout code
@@ -17,13 +19,18 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-          enable-AzPSSession: true
-          allow-no-subscriptions: true
+          
+      - name: Create Resource Group
+        run: az group create -n ${{env.ENV_RESOURCEGROUP}} -l ${{env.ENV_RESOURCEGROUPLOCATION}}
 
-      - name: Deploy Logic App ARM Template
+    
+      - name: Validate ARM template
         run: |
-          az deployment group create \
-            --subscription ${{ env.SUBSCRIPTION }} \
-            --resource-group NewResourceGroup \
-            --template-file ./DeployLogicApp/LogicApp.json \
-            --parameters ./DeployLogicApp/LogicApp.parameters.json
+         az deployment group validate -g ${{env.ENV_RESOURCEGROUP}} --mode Incremental --template-file ./DeployLogicApp/LogicApp.json --parameters ./DeployLogicApp/LogicApp.parameters.json
+         
+      - name: Deploy Logic App
+        run: |
+         echo "::set-env name=logicappurl::$(az deployment group create -g az-logicapp-githubactions-demo-rg --template-file ./src/Deployment/azure-logicapp-demo.deploy.json --parameters ./src/Deployment/azure-logicapp-demo.deploy.parameters.json --query 'properties.outputs.logicAppUrl.value' -o tsv)"
+         shell: bash 
+      - name: Logout
+        run: az logout
