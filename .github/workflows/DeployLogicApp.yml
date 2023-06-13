@@ -2,6 +2,8 @@ on:
   push:
     branches:
       - master
+env:
+  SUBSCRIPTION: 23dedca3-2d6f-4822-a69c-d354f6f9e298
 
 jobs:
   deploy:
@@ -21,7 +23,7 @@ jobs:
       - name: Deploy Logic App ARM Template
         run: |
           az deployment group create \
-            --subscription "${{ secrets.SUBSCRIPTION_ID }}" \
+            --subscription ${{ env.SUBSCRIPTION }} \
             --resource-group NewResourceGroup \
-            --template-file DeployLogicApp/LogicApp.json \
-            --parameters @DeployLogicApp/LogicApp.parameters.json
+            --template-file ./DeployLogicApp/LogicApp.json \
+            --parameters ./DeployLogicApp/LogicApp.parameters.json
